@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.example.mapper.TenantMapper">
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into aaa (id, name, is_deleted) values
+            <foreach collection="param1" item="aaa" open="" close="" separator=",">
+                (#{aaa.id}, #{aaa.name}, #{aaa.deleted})
+            </foreach>
+    </insert>
+
+    <insert id="insert" parameterType="org.example.BasePO">
+        insert into aaa (id, name, is_deleted) values
+        (#{id}, #{name}, #{is_deleted})
+    </insert>
+
+    <select id="pageByTenantNameLikeAndProductCode" resultType="org.example.TenantPO">
+        SELECT
+        t.id as id,
+        t.gmt_create as gmt_create,
+        t.gmt_modified as gmt_modified,
+        t.creator as creator,
+        t.modifier as modifier,
+        t.tenant_name as tenant_name,
+        t.tenant_desc as tenant_desc,
+        t.contact_name as contact_name,
+        t.contact_email as contact_email,
+        t.contact_phone as contact_phone,
+        t.belong_user_id as belong_user_id,
+        t.agent_token as agent_token,
+        t.external_id as external_id
+        FROM uic_tenant t
+        <if test="codes != null and codes.size() > 0">
+            inner join uic_tenant_product_rel r on t.id=r.tenant_id
+        </if>
+        WHERE
+        <if test="tenantName != null and tenantName != ''">
+            t.tenant_name LIKE concat('%',#{tenantName},'%') AND
+        </if>
+        <if test="codes != null and codes.size() > 0">
+            r.product_code in
+            <foreach collection="codes" item="code" separator="," open="(" close=")">
+                #{code}
+            </foreach> AND
+            r.is_deleted = 'N' AND
+        </if>
+        t.is_deleted = 'N'
+        ORDER BY
+        <choose>
+            <when test="sortField != null and sortField != ''">
+                ${sortField}
+            </when>
+            <otherwise>
+                t.gmt_create
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="sort != null and sort != ''">
+                ${sort}
+            </when>
+            <otherwise>
+                DESC
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>
