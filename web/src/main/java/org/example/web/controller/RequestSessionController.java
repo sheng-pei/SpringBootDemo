@@ -19,8 +19,12 @@ public class RequestSessionController {
         return new SessionObject();
     }
 
-    @Autowired
     private SessionObject sessionObject;
+
+    @Autowired
+    public void setSessionObject(SessionObject sessionObject) {
+        this.sessionObject = sessionObject;
+    }
 
     /**
      * return the same object for a session.

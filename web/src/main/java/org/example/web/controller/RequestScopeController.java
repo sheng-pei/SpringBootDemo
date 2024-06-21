@@ -19,8 +19,12 @@ public class RequestScopeController {
         return new RequestObject();
     }
 
-    @Autowired
     private RequestObject requestObject;
+
+    @Autowired
+    public void setRequestObject(RequestObject requestObject) {
+        this.requestObject = requestObject;
+    }
 
     /**
      * return the same object for a request.

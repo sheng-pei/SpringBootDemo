@@ -6,7 +6,6 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
-@ServletComponentScan("forward")
 public class Application {
     public static void main(String[] args) throws Exception {
         SpringApplication application = new SpringApplication(Application.class);
