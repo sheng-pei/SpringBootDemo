@@ -27,10 +27,14 @@ public class AjaxAuthenticationFailureHandler implements AuthenticationFailureHa
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         String username = (String) request.getAttribute(USERNAME_FOR_AJAX_AUTHENTICATION_FAILURE_HANDLER_ATTRIBUTE);
         request.removeAttribute(USERNAME_FOR_AJAX_AUTHENTICATION_FAILURE_HANDLER_ATTRIBUTE);
+
         R<Void> err = R.fromException(exception);
         if (err.getCode() == ResponseCode.LOGIN_ERROR && username != null) {
-            lockChecker.incr(username);
+            if (!lockChecker.incr(username)) {
+                err = ResponseCode.UNKNOWN.res();
+            }
         }
+
         response.setContentType("application/json; charset=utf-8");
         response.getWriter()
                 .write(JsonUtils.write(err));

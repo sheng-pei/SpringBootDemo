@@ -87,13 +87,16 @@ public class LoginLockChecker {
         return res;
     }
 
-    public void incr(String username) {
+    public boolean incr(String username) {
+        boolean res = false;
         String key = USER_LOGIN_ERROR_COUNT_PREFIX + username;
         try {
             redis.execute(INCR_SCRIPT, Collections.singletonList(key), maxAttempts, interval);
+            res = true;
         } catch (Throwable t) {
             log.info("Redis error during increment attempt count.", t);
         }
+        return res;
     }
 
     public void clear(String username) {

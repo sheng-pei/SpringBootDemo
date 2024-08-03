@@ -68,7 +68,7 @@ public enum ResponseCode {
     }
 
     public String message(Object... info) {
-        return Strings.format(message, false, info);
+        return Strings.format(message, info);
     }
 
     public static ResponseCode fromException(Throwable t) {
