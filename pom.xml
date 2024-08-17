@@ -7,7 +7,7 @@
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
-        <version>3.3.0</version>
+        <version>3.1.6</version>
     </parent>
 
     <groupId>org.example</groupId>
@@ -22,12 +22,15 @@
         <module>spring-cloud</module>
         <module>spring-session</module>
         <module>spring-security</module>
+        <module>springdoc</module>
+        <module>springdoc</module>
     </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-session.version>3.2.4</spring-session.version>
     </properties>
 
     <dependencyManagement>
